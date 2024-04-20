@@ -24,6 +24,16 @@ async function run() {
 	try {
 		// Connect the client to the server	(optional starting in v4.7)
 		await client.connect();
+
+		const userCollection = client.db("userDB").collection("users");
+
+		app.post("/users", async (req, res) => {
+			const user = req.body;
+			console.log(`user:`, user);
+			const result = await userCollection.insertOne(user);
+			res.send(result);
+		});
+
 		// Send a ping to confirm a successful connection
 		await client.db("admin").command({ ping: 1 });
 		console.log(
